@@ -7,6 +7,7 @@
 class RateLimiter : public RateLimiterInterface {
 public:
     RateLimiter();
+    RateLimiter(double rate);
     long aquire();
     long aquire(int permits);
 

@@ -7,6 +7,9 @@
 
 RateLimiter::RateLimiter() : interval_(0), max_permits_(0), stored_permits_(0), next_free_(0) {
 }
+RateLimiter::RateLimiter(double rate) : max_permits_(0), stored_permits_(0), next_free_(0) {
+    set_rate(rate);
+}
 long RateLimiter::aquire() {
     return aquire(1);
 }
