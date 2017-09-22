@@ -80,13 +80,21 @@ std::chrono::microseconds RateLimiter::claim_next(double permits) {
 }
 
 double RateLimiter::get_rate() const {
+    if (interval_ == 0) {
+        return 0.0;
+    }
     return 1000000.0 / interval_;
 }
+
 void RateLimiter::set_rate(double rate) {
-    if (rate <= 0.0) {
-        throw std::runtime_error("RateLimiter: Rate must be greater than 0");
-  }
+    if (rate < 0.0) {
+        throw std::runtime_error("RateLimiter: Rate must be greater or equal 0");
+    }
 
     std::lock_guard<std::mutex> lock(mut_);
-    interval_ = 1000000.0 / rate;
+    if (rate == 0.0) {
+        interval_ = 0;
+    } else {
+        interval_ = 1000000.0 / rate;
+    }
 }
